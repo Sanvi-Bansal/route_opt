@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — RouteOpt</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="navbar">
+    <a href="../index.html" class="logo" id="logoLink">
+      <span class="logo-mark">↻</span> Route<span>Opt</span>
+    </a>
+    <div class="nav-center">
+      <a href="../index.html">Home</a>
+      <a href="optimizer.html">Optimizer</a>
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="about.html">About Us</a>
+    </div>
+    <div class="nav-actions">
+      <span id="navUserLabel" style="display:none; color: var(--text-muted); font-size: 0.9rem; margin-right: 0.5rem;"></span>
+      <button class="btn btn-ghost btn-sm" id="btnLogin" onclick="openAuth('login')">Login</button>
+      <button class="btn btn-primary btn-sm" id="btnSignup" onclick="openAuth('signup')">Sign Up</button>
+      <button class="btn btn-ghost btn-sm" id="btnLogout" style="display:none;" onclick="logout()">Log out</button>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="container">
+      <h1>Dashboard</h1>
+      <p>Welcome, <span id="dashUserName">User</span> — your route history & total fuel spending</p>
+    </div>
+  </div>
+
+  <div class="container" style="padding-bottom: 4rem;">
+    <!-- Summary stats -->
+    <div class="dash-stats">
+      <div class="dash-stat">
+        <div class="value" id="totalSpent">₹0</div>
+        <div class="label">Total money spent (fuel)</div>
+      </div>
+      <div class="dash-stat">
+        <div class="value" id="totalKm">0 km</div>
+        <div class="label">Total distance optimized</div>
+      </div>
+      <div class="dash-stat">
+        <div class="value" id="totalRuns">0</div>
+        <div class="label">Optimization runs</div>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="panel">
+      <div class="panel-title">
+        Route history
+        <button class="btn btn-ghost btn-sm" type="button" onclick="clearHistory()">Clear history</button>
+      </div>
+      <div id="historyEmpty" class="history-empty" style="display:none;">
+        No optimized routes yet. Go to the Optimizer and run your first route.
+      </div>
+      <div style="overflow-x: auto;">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Stops</th>
+              <th>Distance</th>
+              <th>Fuel</th>
+              <th>Cost</th>
+              <th>Route</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTH MODAL -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal">
+      <button class="close" type="button" onclick="closeAuth()">&times;</button>
+      <h2 id="authTitle">Log in</h2>
+      <p class="sub" id="authSub">Welcome back. Access your dashboard and optimizer.</p>
+      <div class="auth-error" id="authError"></div>
+      <form id="authForm" onsubmit="return handleAuth(event)">
+        <div class="form-group" id="nameGroup" style="display:none;">
+          <label for="authName">Name</label>
+          <input type="text" id="authName" placeholder="Your name" />
+        </div>
+        <div class="form-group">
+          <label for="authEmail">Email</label>
+          <input type="email" id="authEmail" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="authPassword">Password</label>
+          <input type="password" id="authPassword" placeholder="••••••••" required minlength="4" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="authSubmit">Log in</button>
+      </form>
+      <div class="auth-toggle">
+        <span id="authToggleText">Don't have an account?</span>
+        <button type="button" id="authToggleBtn" onclick="toggleAuthMode()">Sign up</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/dashboard.js"></script>
+</body>
+</html>
