@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — RouteOpt</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="navbar">
+    <a href="../index.html" class="logo" id="logoLink">
+      <span class="logo-mark">↻</span> Route<span>Opt</span>
+    </a>
+    <div class="nav-center">
+      <a href="../index.html">Home</a>
+      <a href="optimizer.html">Optimizer</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="about.html" class="active">About Us</a>
+    </div>
+    <div class="nav-actions">
+      <span id="navUserLabel" style="display:none; color: var(--text-muted); font-size: 0.9rem; margin-right: 0.5rem;"></span>
+      <button class="btn btn-ghost btn-sm" id="btnLogin" onclick="openAuth('login')">Login</button>
+      <button class="btn btn-primary btn-sm" id="btnSignup" onclick="openAuth('signup')">Sign Up</button>
+      <button class="btn btn-ghost btn-sm" id="btnLogout" style="display:none;" onclick="logout()">Log out</button>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="container">
+      <h1>About RouteOpt</h1>
+      <p>Algorithmic route optimization — no map API required</p>
+    </div>
+  </div>
+
+  <div class="container about-content" style="padding-bottom: 4rem;">
+    <p>
+      <strong>RouteOpt</strong> is a pure front-end Vehicle Route & Fuel Cost Optimizer.
+      You enter delivery or pickup stops with coordinates; the browser computes a distance
+      matrix using the <strong>Haversine formula</strong> and builds an efficient visiting
+      order with the <strong>Nearest-Neighbor</strong> heuristic, optionally improved by
+      <strong>2-opt</strong>.
+    </p>
+
+    <h2>Why no map API?</h2>
+    <p>
+      The core challenge is algorithmic: implement real route-optimization logic yourself
+      instead of calling a commercial routing service. This keeps the project educational,
+      offline-friendly, and free of API keys.
+    </p>
+
+    <h2>What you can do</h2>
+    <ul>
+      <li>Add stops (name + latitude / longitude)</li>
+      <li>Set vehicle mileage and fuel price</li>
+      <li>Run optimization and see ordered route + total km + estimated fuel cost</li>
+      <li>Save named stop sets in Local Storage</li>
+      <li>View history and total money spent on the Dashboard</li>
+      <li>Sign up / log in (accounts stored locally in the browser)</li>
+    </ul>
+
+    <h2>Tech stack (syllabus-aligned)</h2>
+    <ul>
+      <li>HTML5 + CSS3 (dark theme matching the design)</li>
+      <li>Vanilla JavaScript — variables, operators, conditionals, loops</li>
+      <li>Functions, arrow functions, arrays & higher-order methods (map, filter, reduce)</li>
+      <li>Objects, JSON, destructuring, template literals</li>
+      <li>DOM selection & manipulation, events, forms & validation</li>
+      <li>Local Storage for users, stops, sets, and route history</li>
+    </ul>
+
+    <h2>Disclaimer</h2>
+    <p>
+      Distances are straight-line (great-circle) approximations. Real road distances and
+      traffic are not considered. Fuel cost is an estimate based on the numbers you provide.
+    </p>
+
+    <p style="margin-top: 2rem;">
+      <a href="optimizer.html" class="btn btn-primary">Go to Optimizer →</a>
+    </p>
+  </div>
+
+  <!-- AUTH MODAL -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal">
+      <button class="close" type="button" onclick="closeAuth()">&times;</button>
+      <h2 id="authTitle">Log in</h2>
+      <p class="sub" id="authSub">Welcome back. Access your dashboard and optimizer.</p>
+      <div class="auth-error" id="authError"></div>
+      <form id="authForm" onsubmit="return handleAuth(event)">
+        <div class="form-group" id="nameGroup" style="display:none;">
+          <label for="authName">Name</label>
+          <input type="text" id="authName" placeholder="Your name" />
+        </div>
+        <div class="form-group">
+          <label for="authEmail">Email</label>
+          <input type="email" id="authEmail" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="authPassword">Password</label>
+          <input type="password" id="authPassword" placeholder="••••••••" required minlength="4" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="authSubmit">Log in</button>
+      </form>
+      <div class="auth-toggle">
+        <span id="authToggleText">Don't have an account?</span>
+        <button type="button" id="authToggleBtn" onclick="toggleAuthMode()">Sign up</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+</body>
+</html>
