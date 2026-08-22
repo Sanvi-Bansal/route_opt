@@ -219,3 +219,71 @@ function saveCurrentSet() {
   renderSavedSets();
   showToast('Set saved: ' + name, 'success');
 }
+
+function loadStopSet(name) {
+  const user = getCurrentUser();
+  if (!user) return;
+
+
+  const sets = loadSets(user.email);
+  if (!sets[name]) return;
+
+
+  // Recreate stops with new ids
+  stops = sets[name].map((s) => ({
+    id: Date.now() + Math.random(),
+    name: s.name,
+    lat: s.lat,
+    lng: s.lng
+  }));
+
+
+  renderStopsList();
+  persistCurrentStops();
+  hideResults();
+  showToast('Loaded set: ' + name);
+}
+
+
+function deleteStopSet(name) {
+  const user = getCurrentUser();
+  if (!user) return;
+
+
+  const sets = loadSets(user.email);
+  delete sets[name];
+  saveSets(user.email, sets);
+  renderSavedSets();
+  showToast('Set deleted');
+}
+
+
+function renderSavedSets() {
+  const user = getCurrentUser();
+  const container = document.getElementById('savedSetsList');
+  if (!container || !user) return;
+
+
+  const sets = loadSets(user.email);
+  const keys = Object.keys(sets);
+
+
+  if (keys.length === 0) {
+    container.innerHTML =
+      '<div style="font-size:0.8rem;color:var(--text-muted);">No saved sets yet.</div>';
+    return;
+  }
+
+
+  container.innerHTML = keys
+    .map(
+      (k) => `
+    <div class="saved-item">
+      <span onclick="loadStopSet('${escapeAttr(k)}')">${escapeHtml(k)} (${sets[k].length})</span>
+      <button class="remove" type="button" onclick="event.stopPropagation(); deleteStopSet('${escapeAttr(k)}')" title="Delete">×</button>
+    </div>
+  `
+    )
+    .join('');
+}
+
