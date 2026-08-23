@@ -1,9 +1,3 @@
-/**
- * RouteOpt — Dashboard page
- * Shows route history and total money spent
- * Syllabus: DOM, Arrays, map, reduce, LocalStorage, Date
- */
-
 document.addEventListener('DOMContentLoaded', () => {
   const user = getCurrentUser();
   if (!user) {
@@ -13,8 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1200);
     return;
   }
-
-  // Show user name
   const nameEl = document.getElementById('dashUserName');
   if (nameEl) nameEl.textContent = user.name || user.email;
 
@@ -26,8 +18,6 @@ function renderDashboard(email) {
   const totalSpent = getTotalSpent(email);
   const totalKm = getTotalKm(email);
   const runCount = history.length;
-
-  // Update summary cards
   const spentEl = document.getElementById('totalSpent');
   const kmEl = document.getElementById('totalKm');
   const runsEl = document.getElementById('totalRuns');
@@ -35,8 +25,6 @@ function renderDashboard(email) {
   if (spentEl) spentEl.textContent = '₹' + formatNum(totalSpent, 0);
   if (kmEl) kmEl.textContent = formatNum(totalKm, 1) + ' km';
   if (runsEl) runsEl.textContent = String(runCount);
-
-  // Render history table
   const tbody = document.getElementById('historyBody');
   const empty = document.getElementById('historyEmpty');
 
@@ -50,7 +38,6 @@ function renderDashboard(email) {
 
   if (empty) empty.style.display = 'none';
 
-  // map over history to build rows
   tbody.innerHTML = history
     .map((item) => {
       const date = new Date(item.date);
