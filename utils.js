@@ -15,3 +15,19 @@ const escapeHtml = (str) => {
   div.textContent = String(str);
   return div.innerHTML;
 };
+
+const escapeAttr = (str) => {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/'/g, '&#39;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+};
+
+
+// Format number with fixed decimals
+const formatNum = (n, digits = 1) => {
+  return Number(n).toFixed(digits);
+};
+
