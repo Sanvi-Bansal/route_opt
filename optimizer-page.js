@@ -120,7 +120,7 @@ function runOptimize() {
   const mileage = parseFloat(document.getElementById('mileage').value) || 15;
   const fuelPrice = parseFloat(document.getElementById('fuelPrice').value) || 100;
 
-  const result = optimize(stops, true);
+  const result = optimize(stops);
   const { order, total, matrix } = result;
 
   const fuelLitres = total / mileage;
@@ -286,4 +286,3 @@ function renderSavedSets() {
     )
     .join('');
 }
-
