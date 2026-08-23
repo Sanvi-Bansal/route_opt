@@ -1,11 +1,4 @@
-/**
- * Haversine formula — great-circle distance between two lat/lng points in km
- * @param {number} lat1
- * @param {number} lon1
- * @param {number} lat2
- * @param {number} lon2
- * @returns {number} distance in kilometres
- */
+
 function haversine(lat1, lon1, lat2, lon2) {
   const R = 6371; // Earth radius in km
   const toRad = (deg) => (deg * Math.PI) / 180;
@@ -27,12 +20,6 @@ function haversine(lat1, lon1, lat2, lon2) {
   return R * c;
 }
 
-
-/**
- * Build a full distance matrix for an array of stops
- * @param {Array<{lat:number, lng:number}>} points
- * @returns {number[][]} matrix[i][j] = distance from i to j
- */
 function buildDistanceMatrix(points) {
   const n = points.length;
   const matrix = [];
@@ -60,14 +47,6 @@ function buildDistanceMatrix(points) {
   return matrix;
 }
 
-
-/**
- * Nearest-Neighbor heuristic for TSP
- * Starts at index 0, repeatedly visits the closest unvisited stop,
- * then returns to the start.
- * @param {number[][]} matrix
- * @returns {{ order: number[], total: number }}
- */
 function nearestNeighbor(matrix) {
   const n = matrix.length;
   if (n < 2) {
@@ -107,11 +86,14 @@ function nearestNeighbor(matrix) {
   return { order, total };
 }
 
+function optimize(stops) {
+  const matrix = buildDistanceMatrix(stops);
+  const result = nearestNeighbor(matrix);
 
-/**
- * Simple 2-opt improvement
- * Tries to remove crossings by reversing segments
- * @param {number[][]} matrix
- * @param {number[]} order  — route including return to start at the end
- * @returns {{ order: number[], total: number }}
- */
+
+  return {
+    order: result.order,
+    total: result.total,
+    matrix: matrix
+  };
+}
