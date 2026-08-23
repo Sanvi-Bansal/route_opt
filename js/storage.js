@@ -44,3 +44,30 @@ function loadHistory(email) {
     return [];
   }
 }
+function saveHistory(email, history) {
+  localStorage.setItem(getHistoryKey(email), JSON.stringify(history));
+}
+
+function addToHistory(email, entry) {
+  const history = loadHistory(email);
+  history.unshift(entry);
+  if (history.length > 50) {
+    history.length = 50;
+  }
+  saveHistory(email, history);
+  return history;
+}
+
+function getTotalSpent(email) {
+  const history = loadHistory(email);
+  return history.reduce((sum, item) => {
+    return sum + (Number(item.fuelCost) || 0);
+  }, 0);
+}
+
+function getTotalKm(email) {
+  const history = loadHistory(email);
+  return history.reduce((sum, item) => {
+    return sum + (Number(item.totalKm) || 0);
+  }, 0);
+}
