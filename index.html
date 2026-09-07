@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RouteOpt — Plan smarter. Drive less.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo" id="logoLink">
+      <span class="logo-mark">↻</span> Route<span>Opt</span>
+    </a>
+    <div class="nav-center">
+      <a href="index.html" class="active">Home</a>
+      <a href="pages/optimizer.html">Optimizer</a>
+      <a href="pages/dashboard.html">Dashboard</a>
+      <a href="pages/about.html">About Us</a>
+    </div>
+    <div class="nav-actions">
+      <span id="navUserLabel" style="display:none; color: var(--text-muted); font-size: 0.9rem; margin-right: 0.5rem;"></span>
+      <button class="btn btn-ghost btn-sm" id="btnLogin" onclick="openAuth('login')">Login</button>
+      <button class="btn btn-primary btn-sm" id="btnSignup" onclick="openAuth('signup')">Sign Up</button>
+      <button class="btn btn-ghost btn-sm" id="btnLogout" style="display:none;" onclick="logout()">Log out</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-badge">
+          <span class="dot"></span> Smart Route Optimization
+        </div>
+        <h1>Plan smarter.<br /><span class="green">Drive less.</span></h1>
+        <p>
+          Optimize your delivery and pickup routes using intelligent algorithms.
+          Add your stops, calculate distances, and find an efficient visiting order —
+          all without relying on map APIs.
+        </p>
+        <div class="hero-actions">
+          <a href="pages/optimizer.html" class="btn btn-primary">Start Optimizing →</a>
+          <a href="#how" class="btn btn-ghost">How it works</a>
+        </div>
+        <div class="hero-tags">
+          <span><strong>Haversine</strong> Distance Calculation</span>
+          <span><strong>Nearest Neighbor</strong> Route Heuristic</span>
+          <span><strong>2-opt</strong> Route Improvement</span>
+        </div>
+      </div>
+
+      <div class="preview-card">
+        <div class="preview-header">
+          <span class="label">Optimized Route</span>
+          <span class="badge">• Optimized</span>
+        </div>
+        <div class="preview-title">Delivery Run #001</div>
+        <div class="preview-stops">
+          <div class="preview-stop">
+            <div class="line">
+              <div class="dot filled"></div>
+              <div class="connector"></div>
+            </div>
+            <div class="info">
+              <strong>Warehouse</strong>
+              <span>Start</span>
+            </div>
+          </div>
+          <div class="preview-stop">
+            <div class="line">
+              <div class="dot"></div>
+              <div class="connector"></div>
+            </div>
+            <div class="info">
+              <strong>Stop A</strong>
+              <span>2.4 km</span>
+            </div>
+          </div>
+          <div class="preview-stop">
+            <div class="line">
+              <div class="dot"></div>
+              <div class="connector"></div>
+            </div>
+            <div class="info">
+              <strong>Stop B</strong>
+              <span>3.1 km</span>
+            </div>
+          </div>
+          <div class="preview-stop">
+            <div class="line">
+              <div class="dot"></div>
+              <div class="connector"></div>
+            </div>
+            <div class="info">
+              <strong>Stop C</strong>
+              <span>1.8 km</span>
+            </div>
+          </div>
+          <div class="preview-stop">
+            <div class="line">
+              <div class="dot filled"></div>
+            </div>
+            <div class="info">
+              <strong>Warehouse</strong>
+              <span>Return</span>
+            </div>
+          </div>
+        </div>
+        <div class="preview-stats">
+          <div class="stat">
+            <div class="value">18.7 km</div>
+            <div class="label">Total Distance</div>
+          </div>
+          <div class="stat">
+            <div class="value">1.6 L</div>
+            <div class="label">Est. Fuel</div>
+          </div>
+          <div class="stat">
+            <div class="value">3</div>
+            <div class="label">Stops</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how">
+    <div class="container">
+      <div class="section-label">How it works</div>
+      <h2 class="section-title">From stops to <span class="green">optimized route</span>.</h2>
+      <p class="section-desc">
+        A simple three-step process powered by algorithms running directly in your browser.
+      </p>
+      <div class="steps-grid">
+        <div class="step-card">
+          <span class="num">01</span>
+          <div class="icon">📍</div>
+          <h3>Add your stops</h3>
+          <p>Enter delivery or pickup locations with their coordinates.</p>
+        </div>
+        <div class="step-card">
+          <span class="num">02</span>
+          <div class="icon">📐</div>
+          <h3>Calculate distances</h3>
+          <p>Use the Haversine formula to calculate the distance between every pair of stops.</p>
+        </div>
+        <div class="step-card">
+          <span class="num">03</span>
+          <div class="icon">⚡</div>
+          <h3>Optimize the route</h3>
+          <p>Apply a route optimization heuristic to find a shorter and more efficient visiting order.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="features-layout">
+        <div class="left">
+          <div class="section-label" style="text-align:left;">Built for algorithmic optimization</div>
+          <h2>No map API.<br /><span class="green">Just algorithms.</span></h2>
+          <p>
+            RouteOpt calculates and improves routes using mathematical distance calculations
+            and optimization heuristics.
+          </p>
+          <a href="pages/optimizer.html" class="btn btn-primary">Try the Optimizer →</a>
+        </div>
+        <div class="feature-cards">
+          <div class="feature-card">
+            <div class="icon">◎</div>
+            <h3>Haversine Formula</h3>
+            <p>Calculate the great-circle distance between two latitude and longitude coordinates.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">↗</div>
+            <h3>Nearest Neighbor</h3>
+            <p>Build an initial route by repeatedly selecting the closest unvisited stop.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">↻</div>
+            <h3>2-opt Improvement</h3>
+            <p>Improve the initial route by removing unnecessary crossings and reducing total distance.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">▣</div>
+            <h3>Local Storage</h3>
+            <p>Save your stop sets locally so you can return to your previous routes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALGORITHM -->
+  <section class="section">
+    <div class="container">
+      <div class="algo-section">
+        <div>
+          <div class="section-label" style="text-align:left;">The Algorithm</div>
+          <h2>Turning a complex problem into an efficient route.</h2>
+          <p>
+            The Vehicle Routing Problem can become computationally expensive as the number of
+            stops increases. Instead of trying every possible route, RouteOpt uses heuristics
+            to quickly find a practical solution.
+          </p>
+          <a href="pages/optimizer.html" class="btn btn-primary">Try the Optimizer →</a>
+        </div>
+        <div class="code-block">
+          <span class="cm">// Simplified flow</span><br />
+          <span class="kw">route</span> = nearestNeighbor(stops)<br /><br />
+          <span class="kw">while</span> improved:<br />
+          &nbsp;&nbsp;improved = <span class="kw">false</span><br /><br />
+          &nbsp;&nbsp;<span class="kw">for</span> each pair of edges:<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;newRoute = twoOptSwap()<br /><br />
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> distance(newRoute)<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt; distance(route):<br /><br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route = newRoute<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;improved = <span class="kw">true</span><br /><br />
+          <span class="kw">return</span> route
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container">
+      <div class="section-label">Ready to optimize?</div>
+      <h2>Your next route can<br />be <span class="green">smarter.</span></h2>
+      <p>Add your stops and let the algorithm find an efficient visiting order.</p>
+      <a href="pages/optimizer.html" class="btn btn-primary">Start Optimizing →</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="logo" style="justify-content:center;">
+        <span class="logo-mark">↻</span> Route<span>Opt</span>
+      </div>
+      <p>Algorithmic route optimization for smarter transportation.</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="pages/optimizer.html">Optimizer</a>
+        <a href="pages/dashboard.html">Dashboard</a>
+        <a href="pages/about.html">About</a>
+        <a href="#" onclick="openAuth('login'); return false;">Login</a>
+      </div>
+      <div class="footer-copy">© 2026 RouteOpt. Built for efficient routing.</div>
+    </div>
+  </footer>
+
+  <div class="modal-overlay" id="authModal">
+    <div class="modal">
+      <button class="close" type="button" onclick="closeAuth()">&times;</button>
+      <h2 id="authTitle">Log in</h2>
+      <p class="sub" id="authSub">Welcome back. Access your dashboard and optimizer.</p>
+      <div class="auth-error" id="authError"></div>
+      <form id="authForm" onsubmit="return handleAuth(event)">
+        <div class="form-group" id="nameGroup" style="display:none;">
+          <label for="authName">Name</label>
+          <input type="text" id="authName" placeholder="Your name" />
+        </div>
+        <div class="form-group">
+          <label for="authEmail">Email</label>
+          <input type="email" id="authEmail" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="authPassword">Password</label>
+          <input type="password" id="authPassword" placeholder="••••••••" required minlength="4" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="authSubmit">Log in</button>
+      </form>
+      <div class="auth-toggle">
+        <span id="authToggleText">Don't have an account?</span>
+        <button type="button" id="authToggleBtn" onclick="toggleAuthMode()">Sign up</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
