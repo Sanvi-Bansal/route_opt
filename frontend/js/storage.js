@@ -1,76 +1,97 @@
+/**
+ * Storage layer — backed by MongoDB via API.
+ */
 
-function getStopsKey(email) {
-  return 'routeopt_stops_' + email;
-}
-
-function loadStops(email) {
+async function loadStopsFromAPI() {
   try {
-    const raw = localStorage.getItem(getStopsKey(email));
-    return raw ? JSON.parse(raw) : [];
+    const stops = await StopsAPI.list();
+    return stops
+      .filter((s) => !s.setName)
+      .map((s) => ({ id: s._id, name: s.name, lat: s.lat, lng: s.lng }));
   } catch (e) {
+    console.warn('loadStopsFromAPI', e);
     return [];
   }
 }
 
-function saveStops(email, stops) {
-  localStorage.setItem(getStopsKey(email), JSON.stringify(stops));
+async function persistStopToAPI(stop) {
+  if (stop.id && String(stop.id).length === 24) return stop;
+  const created = await StopsAPI.create({
+    name: stop.name,
+    lat: stop.lat,
+    lng: stop.lng,
+  });
+  return { id: created._id, name: created.name, lat: created.lat, lng: created.lng };
 }
 
-function getSetsKey(email) {
-  return 'routeopt_sets_' + email;
-}
-
-function loadSets(email) {
+async function removeStopFromAPI(id) {
+  if (!id) return;
   try {
-    const raw = localStorage.getItem(getSetsKey(email));
-    return raw ? JSON.parse(raw) : {};
+    await StopsAPI.remove(id);
   } catch (e) {
+    console.warn('removeStopFromAPI', e);
+  }
+}
+
+async function clearStopsFromAPI() {
+  try {
+    const stops = await StopsAPI.list();
+    const current = stops.filter((s) => !s.setName);
+    await Promise.all(current.map((s) => StopsAPI.remove(s._id)));
+  } catch (e) {
+    console.warn('clearStopsFromAPI', e);
+  }
+}
+
+async function loadSetsFromAPI() {
+  try {
+    return await StopsAPI.listSets();
+  } catch (e) {
+    console.warn('loadSetsFromAPI', e);
     return {};
   }
 }
 
-function saveSets(email, sets) {
-  localStorage.setItem(getSetsKey(email), JSON.stringify(sets));
+async function saveSetToAPI(name, stops) {
+  return StopsAPI.saveSet(
+    name,
+    stops.map((s) => ({ name: s.name, lat: s.lat, lng: s.lng }))
+  );
 }
 
-function getHistoryKey(email) {
-  return 'routeopt_history_' + email;
+async function deleteSetFromAPI(name) {
+  return StopsAPI.deleteSet(name);
 }
 
-function loadHistory(email) {
+async function loadHistoryFromAPI() {
   try {
-    const raw = localStorage.getItem(getHistoryKey(email));
-    return raw ? JSON.parse(raw) : [];
+    const plans = await RoutesAPI.list();
+    return plans.map((p) => ({
+      id: p._id,
+      date: p.createdAt,
+      stopCount: p.stopCount,
+      totalKm: p.totalKm,
+      fuelLitres: p.fuelLitres,
+      fuelCost: p.fuelCost,
+      stopNames: p.stopNames,
+    }));
   } catch (e) {
+    console.warn('loadHistoryFromAPI', e);
     return [];
   }
 }
 
-function saveHistory(email, history) {
-  localStorage.setItem(getHistoryKey(email), JSON.stringify(history));
-}
-function addToHistory(email, entry) {
-  const history = loadHistory(email);
-  // Keep newest first
-  history.unshift(entry);
-  // Limit to last 50 runs
-  if (history.length > 50) {
-    history.length = 50;
-  }
-  saveHistory(email, history);
-  return history;
+async function clearHistoryFromAPI() {
+  return RoutesAPI.clear();
 }
 
-function getTotalSpent(email) {
-  const history = loadHistory(email);
-  return history.reduce((sum, item) => {
-    return sum + (Number(item.fuelCost) || 0);
-  }, 0);
-}
-
-function getTotalKm(email) {
-  const history = loadHistory(email);
-  return history.reduce((sum, item) => {
-    return sum + (Number(item.totalKm) || 0);
-  }, 0);
-}
+// Legacy sync stubs (unused after API migration)
+function loadStops() { return []; }
+function saveStops() {}
+function loadSets() { return {}; }
+function saveSets() {}
+function loadHistory() { return []; }
+function saveHistory() {}
+function addToHistory() {}
+function getTotalSpent() { return 0; }
+function getTotalKm() { return 0; }
